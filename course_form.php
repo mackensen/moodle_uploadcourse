@@ -85,7 +85,7 @@ class admin_uploadcourse_form extends moodleform {
         $choices[FORMAT_PLAIN] = get_string('formatplain');
         $choices[FORMAT_HTML]  = get_string('formathtml');
         $mform->addElement('select', 'summaryformat', get_string('summaryformat', 'tool_uploadcourse'), $choices);
-        $mform->setDefault('summaryformat', $courseconfig->summaryformat);
+        $mform->setDefault('summaryformat', FORMAT_HTML);
 
 	/// --- Group defaults --- ///
 	$mform->addElement('header', '', get_string('defaultgroups', 'tool_uploadcourse'));	

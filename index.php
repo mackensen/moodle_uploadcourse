@@ -37,27 +37,27 @@
     require_once('locallib.php');
     require_once('course_form.php');
     $courseid=-1;
-    
+
     require_login();
     admin_externalpage_setup('tooluploadcourse');
-    require_capability('moodle/site:uploadusers', get_context_instance(CONTEXT_SYSTEM));    
+    require_capability('moodle/site:uploadusers', get_context_instance(CONTEXT_SYSTEM));
 
     set_time_limit(300); // Up the php timeout
     $returnurl = new moodle_url('/admin/tool/uploadcourse/index.php');
 
 /// If a file has been uploaded, then process it
     $mform = new admin_uploadcourse_form();
-    if ($formdata = $mform->get_data()) {    
+    if ($formdata = $mform->get_data()) {
         echo $OUTPUT->header();
 
         // Required fields
         $REQUIRED_FIELDS = array('fullname', 'shortname');
-        
+
         // Form fields
         $FORM_FIELDS = array('format', 'numsections', 'startdate', 'hiddensections', 'newsitems',
                             'showgrades', 'showreports', 'maxbytes', 'groupmode', 'groupmodeforce',
                             'defaultgroupingid', 'visible', 'lang', 'summaryformat');
-        
+
         // Allowed fields
         $ALLOWED_FIELDS = array('fullname', 'shortname','category','sortorder','summary', 'summaryformat',
                             'format','showgrades','newsitems','teacher','teachers','student',
@@ -88,7 +88,7 @@
         if (!empty($missing_required_values)) {
             print_error('fieldrequired', 'error', $returnurl, implode(',',array_keys($missing_required_values)));
         }
-        
+
         // Set variables for bulk processing
         $cir->init();
         $linenum                 = 1;
@@ -112,11 +112,11 @@
             $coursetocreate = array();
             foreach($line as $key => $value) {
                 $cf = $headers[$key];
-                
+
                 // Pass each item through validation
                 $coursetocreate[$cf] = uc_validate_item($value, $cf, $returnurl, $linenum);
             }
-            
+
             // Process teacher data
             $teachers = array();
             if (!empty($coursetocreate['teacher_ids'])) {
@@ -145,22 +145,22 @@
             }
             unset($coursetocreate['teacher_ids']);
             $coursetocreate['teachers'] = array_unique($teachers);
-            
-            $bulkcourses[] = $coursetocreate; // Merge into array            
+
+            $bulkcourses[] = $coursetocreate; // Merge into array
         }
-        
+
         // Done with csv import
         $cir->close();
         $cir->cleanup();
 
         // Create status object
         $status = uc_create_status_object($bulkcourses, $missing_teachers);
-        
+
         // Terminate if no courses found
         if (empty($status->bulk)) {
-            print_error('nocourses', 'tool_uploadcourses', $returnurl);    
+            print_error('nocourses', 'tool_uploadcourses', $returnurl);
         }
-        
+
         // Loop through processed courses
         foreach ($bulkcourses as $bulkcourse) {
             // Try to create the course
@@ -221,7 +221,7 @@
         // Print results
         notify(get_string('creationstatus', 'tool_uploadcourse', $status), 'notifysuccess');
         echo $OUTPUT->footer();
-        
+
     } else {
         // No form submitted; display interface
         echo $OUTPUT->header();

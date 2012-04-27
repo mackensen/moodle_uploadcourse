@@ -35,7 +35,7 @@ class admin_uploadcourse_form extends moodleform {
         $coursecontext = null;
 
 	/// --- General defaults --- ///
-	// these were taken unaltered from the course creation form        
+	// these were taken unaltered from the course creation form
         $mform->addElement('header', '', get_string('defaultgeneral', 'tool_uploadcourse'));
         $courseformats = get_plugin_list('format');
         $formcourseformats = array();
@@ -80,7 +80,7 @@ class admin_uploadcourse_form extends moodleform {
         $mform->addElement('select', 'maxbytes', get_string('maximumupload'), $choices);
         $mform->addHelpButton('maxbytes', 'maximumupload');
         $mform->setDefault('maxbytes', $courseconfig->maxbytes);
-        
+
         $choices = array();
         $choices[FORMAT_PLAIN] = get_string('formatplain');
         $choices[FORMAT_HTML]  = get_string('formathtml');
@@ -152,7 +152,7 @@ class admin_uploadcourse_form extends moodleform {
 
 	/// --- Utility configuration --- ///
 	// these were cribbed from the user upload tool
-        $mform->addElement('header', 'utility', 'Utility');        
+        $mform->addElement('header', 'utility', 'Utility');
         $choices = csv_import_reader::get_delimiter_list();
         $mform->addElement('select', 'delimiter_name', get_string('csvdelimiter', 'tool_uploaduser'), $choices);
         if (array_key_exists('cfg', $choices)) {
@@ -169,7 +169,7 @@ class admin_uploadcourse_form extends moodleform {
         $mform->setDefault('encoding', 'UTF-8');
 
         $mform->addElement('filepicker', 'coursefile', get_string('file'), null, array('accepted_types' => '*'));
-        
+
         $this->add_action_buttons();
     }
 }

@@ -92,7 +92,7 @@ function uc_validate_item($value, $key, $returnurl, $linenum) {
  **/
 function uc_validate_course_upload_columns(csv_import_reader $cir, $stdfields, moodle_url $returnurl) {
     $columns = $cir->get_columns();
-    
+
     // Verify that we have a header row AND at least one row of data
     if (empty($columns)) {
         $cir->close();
@@ -101,13 +101,13 @@ function uc_validate_course_upload_columns(csv_import_reader $cir, $stdfields, m
     } else if(count($columns) < 2) {
         $cir->close();
         $cir->cleanup();
-        print_error('csvfewcolumns', 'error', $returnurl);        
+        print_error('csvfewcolumns', 'error', $returnurl);
     }
-    
+
     // Textlib for handling unicode data
     $textlib = textlib_get_instance();
 
-    // Cycle through the columns. Note that $value is unused.    
+    // Cycle through the columns. Note that $value is unused.
     $processed = array();
     foreach ($columns as $key => $value) {
         $field    = $columns[$key];
@@ -121,14 +121,14 @@ function uc_validate_course_upload_columns(csv_import_reader $cir, $stdfields, m
             $cir->cleanup();
             print_error('invalidfieldname', 'error', $returnurl, $field);
         }
-        
+
         // Check for duplicates
         if (in_array($field_new, $processed)) {
             $cir->close();
             $cir->cleanup();
             print_error('duplicatefieldname', 'error', $returnurl, $field_new);
         }
-        
+
         $processed[$key] = $field_new;
     }
     return $processed;
@@ -160,7 +160,7 @@ function uc_category_exists($category) {
  */
 function uc_category_create($hname, &$hstatus, $hparent=0, &$categories_cached) {
     global $DB;
-       
+
     // Does this category exist?
     $hash = md5($hname . $hparent);
     if (array_key_exists($hash, $categories_cached)) {
@@ -207,33 +207,33 @@ function uc_course_shortname_exists($shortname) {
  */
 function uc_create_course($category, $course, $headers, $coursedata) {
     global $DB;
-        
+
     if(!is_array($course) || !is_array($headers)) {
         return false;
     }
 
     // Add category
     $course['category'] = $category;
-    
+
     // Split out teachers
     $teachers = $course['teachers'];
     unset($course['teachers']);
-                
+
     // Add items
     foreach ($headers as $key => $value) {
         if (!empty($course[$value])) {
             $coursedata->{$value} = $course[$value];
         }
     }
-        
+
     $newcourse = create_course($coursedata);
-    
+
     // Enrol teachers
     $context = get_context_instance(CONTEXT_COURSE, $newcourse->id);
     foreach ($teachers as $teacher) {
         role_assign(3, $teacher, $context->id);
     }
-    
+
     return true;
 }
 

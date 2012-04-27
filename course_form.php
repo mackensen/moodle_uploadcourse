@@ -80,6 +80,12 @@ class admin_uploadcourse_form extends moodleform {
         $mform->addElement('select', 'maxbytes', get_string('maximumupload'), $choices);
         $mform->addHelpButton('maxbytes', 'maximumupload');
         $mform->setDefault('maxbytes', $courseconfig->maxbytes);
+        
+        $choices = array();
+        $choices[FORMAT_PLAIN] = get_string('formatplain');
+        $choices[FORMAT_HTML]  = get_string('formathtml');
+        $mform->addElement('select', 'summaryformat', get_string('summaryformat', 'tool_uploadcourse'), $choices);
+        $mform->setDefault('summaryformat', $courseconfig->summaryformat);
 
 	/// --- Group defaults --- ///
 	$mform->addElement('header', '', get_string('defaultgroups', 'tool_uploadcourse'));	

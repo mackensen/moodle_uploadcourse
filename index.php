@@ -56,10 +56,10 @@
         // Form fields
         $FORM_FIELDS = array('format', 'numsections', 'startdate', 'hiddensections', 'newsitems',
                             'showgrades', 'showreports', 'maxbytes', 'groupmode', 'groupmodeforce',
-                            'defaultgroupingid', 'visible', 'lang');
+                            'defaultgroupingid', 'visible', 'lang', 'summaryformat');
         
         // Allowed fields
-        $ALLOWED_FIELDS = array('fullname', 'shortname','category','sortorder','summary',
+        $ALLOWED_FIELDS = array('fullname', 'shortname','category','sortorder','summary', 'summaryformat',
                             'format','showgrades','newsitems','teacher','teachers','student',
                             'students','startdate','numsections','maxbytes','visible','groupmode',
                             'timecreated','timemodified','idnumber','password','enrolperiod',

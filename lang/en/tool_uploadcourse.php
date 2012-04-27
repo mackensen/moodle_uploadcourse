@@ -47,6 +47,7 @@ $string['nocourses'] = 'Did not find any courses to upload';
 $string['parsedcourses'] = 'Parsed {$a} courses from file';
 $string['pluginname'] = 'Course upload';
 $string['skippedcourses'] = '{$a} three courses were skipped (duplicate shortname)';
+$string['summaryformat'] = 'Summary format';
 $string['uploadcourses'] = 'Upload courses';
 $string['uploadcourses_help'] = 'Upload an <a href="http://www.rfc-editor.org/rfc/rfc4180.txt" target="_blank">RFC4180</a>-Compliant CSV file.
 

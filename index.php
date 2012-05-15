@@ -63,7 +63,7 @@
                             'format','showgrades','newsitems','teacher','teachers','student',
                             'students','startdate','numsections','maxbytes','visible','groupmode',
                             'timecreated','timemodified','idnumber','password','enrolperiod',
-                            'groupmodeforce','metacourse','lang','theme','cost','showreports',
+                            'groupmodeforce','lang','theme','cost','showreports',
                             'guest','enrollable','enrolstartdate','enrolenddate','notifystudents',
                             'template','expirynotify','expirythreshold','hiddensections','defaultgroupingid',
                             'teacher_ids');

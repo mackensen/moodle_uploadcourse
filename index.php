@@ -60,13 +60,11 @@
 
         // Allowed fields
         $ALLOWED_FIELDS = array('fullname', 'shortname','category','sortorder','summary', 'summaryformat',
-                            'format','showgrades','newsitems','teacher','teachers','student',
-                            'students','startdate','numsections','maxbytes','visible','groupmode',
+                            'format','showgrades','newsitems','startdate','numsections','maxbytes','visible','groupmode',
                             'timecreated','timemodified','idnumber','password','enrolperiod',
                             'groupmodeforce','lang','theme','cost','showreports',
                             'guest','enrollable','enrolstartdate','enrolenddate','notifystudents',
-                            'template','expirynotify','expirythreshold','hiddensections','defaultgroupingid',
-                            'teacher_ids');
+                            'template','expirynotify','expirythreshold','hiddensections','defaultgroupingid');
 
         // Populate the default course
         $default_course = new stdClass();
@@ -95,8 +93,6 @@
         $fieldcount              = count($headers);
         $bulkcourses             = array();
         $categories_cached       = array();	// store created categories
-        $teacher_ids_cached      = array();	// store teacher ids
-        $missing_teachers        = array();
 
         while ($line = $cir->next()) {
             $linenum++;
@@ -117,35 +113,6 @@
                 $coursetocreate[$cf] = uc_validate_item($value, $cf, $returnurl, $linenum);
             }
 
-            // Process teacher data
-            $teachers = array();
-            if (!empty($coursetocreate['teacher_ids'])) {
-                foreach ($coursetocreate['teacher_ids'] as $id) {
-                    if (!empty($id)) {
-                        if (array_key_exists($id, $teacher_ids_cached)) {
-                            $teachers[] = $teacher_ids_cached[$id];
-                        } else {
-                            // Try id first
-                            $result = $DB->get_record('user', array('idnumber' => $id));
-                            if ($result) {
-                                $teachers[] = $result->id;
-                                $teacher_ids_cached[$id] = $result->id;
-                            } else {
-                                $result = $DB->get_record('user', array('username' => $id));
-                                if ($result) {
-                                    $teachers[] = $result->id;
-                                    $teacher_ids_cached[$id] = $result->id;
-                                } else {
-                                    $missing_teachers[] = 'ID: '.$id;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            unset($coursetocreate['teacher_ids']);
-            $coursetocreate['teachers'] = array_unique($teachers);
-
             $bulkcourses[] = $coursetocreate; // Merge into array
         }
 
@@ -154,7 +121,7 @@
         $cir->cleanup();
 
         // Create status object
-        $status = uc_create_status_object($bulkcourses, $missing_teachers);
+        $status = uc_create_status_object($bulkcourses);
 
         // Terminate if no courses found
         if (empty($status->bulk)) {

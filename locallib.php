@@ -60,11 +60,6 @@ function uc_validate_item($value, $key, $returnurl, $linenum) {
                 return strtotime($value);
             }
             break;
-        case 'teacher_ids':
-            $teachers = explode('/', $value);
-            array_walk($teachers, 'trim');
-            return clean_param_array($teachers, PARAM_TEXT);
-            break;
         default:
             switch (gettype($value)) {
                 case 'boolean':
@@ -215,10 +210,6 @@ function uc_create_course($category, $course, $headers, $coursedata) {
     // Add category
     $course['category'] = $category;
 
-    // Split out teachers
-    $teachers = $course['teachers'];
-    unset($course['teachers']);
-
     // Add items
     foreach ($headers as $key => $value) {
         if (!empty($course[$value])) {
@@ -228,12 +219,6 @@ function uc_create_course($category, $course, $headers, $coursedata) {
 
     $newcourse = create_course($coursedata);
 
-    // Enrol teachers
-    $context = get_context_instance(CONTEXT_COURSE, $newcourse->id);
-    foreach ($teachers as $teacher) {
-        role_assign(3, $teacher, $context->id);
-    }
-
     return true;
 }
 
@@ -242,7 +227,7 @@ function uc_create_course($category, $course, $headers, $coursedata) {
  * @param array $courses
  * @return object
  */
-function uc_create_status_object($courses, $mteachers) {
+function uc_create_status_object($courses) {
     $status             = new stdClass();
     $status->bulk       = count($courses);
     $status->skipped    = 0;
@@ -251,7 +236,6 @@ function uc_create_status_object($courses, $mteachers) {
     $status->read       = 0;
     $status->catcreated = 0;
     $status->catbroken  = 0;
-    $status->mteachers  = array_unique($mteachers);
     return $status;
 }
 ?>
